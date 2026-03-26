@@ -57,3 +57,4 @@ crashlytics-build.properties
 fabric.properties
 kotlin-js-store/
 .envrc
+.kotlin/

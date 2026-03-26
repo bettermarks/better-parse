@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlin.allopen)
@@ -21,27 +23,28 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
+
+        jvmTest {
+            dependencies {
+                implementation(kotlin("test-junit"))
+            }
+        }
+
+        jsTest {
+            dependencies {
+                implementation(kotlin("test-js"))
+            }
+        }
     }
 
     jvm {
-        compilations["main"].apply {
-            kotlinOptions.jvmTarget = "1.8"
-        }
-
-        compilations["test"].defaultSourceSet.dependencies {
-            implementation(kotlin("test-junit"))
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_21
         }
     }
 
     js(IR) {
         nodejs()
-
-        compilations["main"].defaultSourceSet.dependencies {
-            implementation(kotlin("stdlib-js"))
-        }
-        compilations["test"].defaultSourceSet.dependencies {
-            implementation(kotlin("test-js"))
-        }
     }
 
     linuxX64 { }

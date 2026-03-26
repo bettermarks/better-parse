@@ -1,4 +1,5 @@
 import org.apache.tools.ant.taskdefs.condition.Os
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.AbstractKotlinNativeTargetPreset
 import java.net.URI
 
@@ -26,27 +27,28 @@ kotlin {
                 implementation(kotlin("test-annotations-common"))
             }
         }
+
+        jsTest {
+            dependencies {
+                implementation(kotlin("test-js"))
+            }
+        }
+        jvmTest {
+            dependencies {
+                implementation(kotlin("test-junit"))
+            }
+        }
     }
 
     jvm {
-        compilations["test"].defaultSourceSet.dependencies {
-            implementation(kotlin("test-junit"))
-        }
-        compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_21
         }
     }
 
     js(IR) {
         // browser()
         nodejs()
-
-        compilations["test"].defaultSourceSet.dependencies {
-            implementation(kotlin("test-js"))
-        }
-        compilations.all {
-            kotlinOptions.moduleKind = "umd"
-        }
     }
 
     linuxX64()
