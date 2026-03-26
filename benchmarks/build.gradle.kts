@@ -33,7 +33,7 @@ kotlin {
         }
     }
 
-    js {
+    js(IR) {
         nodejs()
 
         compilations["main"].defaultSourceSet.dependencies {
