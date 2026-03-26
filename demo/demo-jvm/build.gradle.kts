@@ -1,5 +1,9 @@
 plugins {
-    kotlin("jvm")
+    id(libs.plugins.kotlin.jvm.get().pluginId)
+}
+
+repositories {
+    mavenCentral()
 }
 
 dependencies {

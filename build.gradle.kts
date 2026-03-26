@@ -3,10 +3,14 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.AbstractKotlinNativeTargetPreset
 import java.net.URI
 
 plugins {
-    kotlin("multiplatform")
+    alias(libs.plugins.kotlin.multiplatform)
 
     id("maven-publish")
     id("signing")
+}
+
+repositories {
+    mavenCentral()
 }
 
 kotlin {
@@ -34,7 +38,7 @@ kotlin {
             implementation(kotlin("test-junit"))
         }
         compilations.all {
-            kotlinOptions.jvmTarget = "1.6"
+            kotlinOptions.jvmTarget = "1.8"
         }
     }
 

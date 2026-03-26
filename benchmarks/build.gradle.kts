@@ -1,7 +1,10 @@
 plugins {
-    kotlin("multiplatform")
-    kotlin("plugin.allopen")
-    id("org.jetbrains.kotlinx.benchmark")
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.allopen)
+    alias(libs.plugins.kotlinx.benchmark)
+}
+repositories {
+    mavenCentral()
 }
 
 kotlin {
@@ -9,8 +12,8 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(rootProject)
-                implementation(benchmark)
-                implementation(serialization)
+                implementation(libs.kotlinx.benchmark.runtime)
+                implementation(libs.kotlinx.serialization.json)
             }
         }
         commonTest {

@@ -1,5 +1,9 @@
 plugins {
-    kotlin("js")
+    id(libs.plugins.kotlin.js.get().pluginId)
+}
+
+repositories {
+    mavenCentral()
 }
 
 dependencies {
@@ -7,6 +11,7 @@ dependencies {
 }
 
 kotlin.js().nodejs()
+
 
 var assembleWeb = task<Sync>("assembleWeb") {
     val main by kotlin.js().compilations.getting
