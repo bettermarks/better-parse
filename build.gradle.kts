@@ -1,7 +1,4 @@
-import org.apache.tools.ant.taskdefs.condition.Os
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.plugin.mpp.AbstractKotlinNativeTargetPreset
-import java.net.URI
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
