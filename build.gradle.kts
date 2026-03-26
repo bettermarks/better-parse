@@ -39,7 +39,7 @@ kotlin {
     }
 
     js(BOTH) {
-        browser()
+//        browser()
         nodejs()
 
         compilations["test"].defaultSourceSet.dependencies {
