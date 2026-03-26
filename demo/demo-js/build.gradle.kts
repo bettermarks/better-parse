@@ -13,10 +13,11 @@ dependencies {
 kotlin {
     js(IR) {
         nodejs()
+        binaries.executable()
     }
 }
 
-var assembleWeb = task<Sync>("assembleWeb") {
+var assembleWeb = tasks.register<Sync>("assembleWeb") {
     val main by kotlin.js().compilations.getting
 
     from(project.provider {
@@ -28,9 +29,9 @@ var assembleWeb = task<Sync>("assembleWeb") {
         }
     })
 
-    from(main.compileKotlinTaskProvider.map { it.destinationDirectory })
+    from(main.compileTaskProvider.map { it.destinationDirectory })
     from(kotlin.sourceSets.main.get().resources) { include("*.html") }
-    into("${buildDir}/web")
+    into("${layout.buildDirectory.get()}/web")
 }
 
 tasks.assemble {

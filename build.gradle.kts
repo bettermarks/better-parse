@@ -38,7 +38,7 @@ kotlin {
     }
 
     js(IR) {
-//        browser()
+        // browser()
         nodejs()
 
         compilations["test"].defaultSourceSet.dependencies {
