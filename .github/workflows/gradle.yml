@@ -24,5 +24,8 @@ jobs:
         distribution: "temurin"
         cache: "gradle"
 
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v5
+
     - name: Build everything and run all tests
       run: ./gradlew build
