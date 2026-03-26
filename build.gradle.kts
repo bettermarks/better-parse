@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform)
 
     id("maven-publish")
-    id("signing")
 }
 
 repositories {
@@ -26,10 +25,6 @@ kotlin {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
             }
-        }
-
-        create("nativeMain") {
-            dependsOn(commonMain.get())
         }
     }
 
@@ -54,13 +49,7 @@ kotlin {
         }
     }
 
-    presets.withType<AbstractKotlinNativeTargetPreset<*>>().forEach {
-        targetFromPreset(it) {
-            compilations.getByName("main") {
-                defaultSourceSet.dependsOn(sourceSets["nativeMain"])
-            }
-        }
-    }
+    linuxX64()
 }
 
 //region Code generation
@@ -84,55 +73,6 @@ kotlin.sourceSets.commonMain {
 
 //endregion
 
-//region Publication
-
-val publicationsFromWindows = listOf("mingwX64", "mingwX86")
-
-val publicationsFromMacos =
-    kotlin.targets.names.filter {
-        it.startsWith("macos") || it.startsWith("ios") || it.startsWith("watchos") || it.startsWith("tvos")
-    }
-
-val publicationsFromLinux = publishing.publications.names - publicationsFromWindows - publicationsFromMacos
-
-val publicationsFromThisPlatform = when {
-    Os.isFamily(Os.FAMILY_WINDOWS) -> publicationsFromWindows
-    Os.isFamily(Os.FAMILY_MAC) -> publicationsFromMacos
-    Os.isFamily(Os.FAMILY_UNIX) -> publicationsFromLinux
-    else -> error("Expected Windows, Mac, or Linux host")
-}
-
-tasks.withType(AbstractPublishToMaven::class).all {
-    onlyIf { publication.name in publicationsFromThisPlatform }
-}
-
-publishing {
-    repositories {
-        maven {
-            name = "central"
-            val sonatypeUsername = "h0tk3y"
-            url = URI("https://oss.sonatype.org/service/local/staging/deploy/maven2")
-
-            credentials {
-                username = sonatypeUsername
-                password = findProperty("sonatypePassword") as? String
-            }
-        }
-    }
-}
-
-// Add a Javadoc JAR to each publication as required by Maven Central:
-
-val javadocJar by tasks.creating(Jar::class) {
-    archiveClassifier.value("javadoc")
-    // TODO: instead of a single empty Javadoc JAR, generate real documentation for each module
-}
-
-publishing {
-    publications.withType<MavenPublication>().all {
-        artifact(javadocJar)
-    }
-}
 
 fun customizeForMavenCentral(pom: org.gradle.api.publish.maven.MavenPom) = pom.withXml {
     fun groovy.util.Node.add(key: String, value: String) {
@@ -179,12 +119,20 @@ fun customizeForMavenCentral(pom: org.gradle.api.publish.maven.MavenPom) = pom.w
 }
 
 publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/bettermarks/better-parse")
+
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+
     publications.withType<MavenPublication>().all {
         customizeForMavenCentral(pom)
-
-        // Signing requires that
-        // `signing.keyId`, `signing.password`, and `signing.secretKeyRingFile` are provided as Gradle properties
-        signing.sign(this@all)
     }
 }
 

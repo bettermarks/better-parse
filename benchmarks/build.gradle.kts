@@ -44,9 +44,7 @@ kotlin {
         }
     }
 
-    macosX64 { }
     linuxX64 { }
-    mingwX64 { }
 }
 
 allOpen.annotation("org.openjdk.jmh.annotations.State")
