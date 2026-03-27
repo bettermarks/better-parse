@@ -1,12 +1,11 @@
 plugins {
-    id(libs.plugins.kotlin.jvm.get().pluginId)
+  id(libs.plugins.kotlin.jvm.get().pluginId)
+  alias(libs.plugins.ktfmt)
 }
 
-repositories {
-    mavenCentral()
-}
+repositories { mavenCentral() }
 
 dependencies {
-    implementation(rootProject)
-    implementation(kotlin("stdlib"))
+  implementation(rootProject)
+  implementation(kotlin("stdlib"))
 }

@@ -8,18 +8,18 @@ import kotlinx.serialization.json.Json
 
 @State(Scope.Benchmark)
 open class JsonGrammar {
-    @Benchmark
-    open fun jsonBetterParseNaive() {
-        NaiveJsonGrammar().parseToEnd(jsonSample1K)
-    }
+  @Benchmark
+  open fun jsonBetterParseNaive() {
+    NaiveJsonGrammar().parseToEnd(jsonSample1K)
+  }
 
-    @Benchmark
-    open fun jsonBetterParse() {
-        OptimizedJsonGrammar().parseToEnd(jsonSample1K)
-    }
-    
-    @Benchmark
-    open fun jsonKotlinxDeserializer() {
-        Json {}.parseToJsonElement(jsonSample1K)
-    }
+  @Benchmark
+  open fun jsonBetterParse() {
+    OptimizedJsonGrammar().parseToEnd(jsonSample1K)
+  }
+
+  @Benchmark
+  open fun jsonKotlinxDeserializer() {
+    Json {}.parseToJsonElement(jsonSample1K)
+  }
 }

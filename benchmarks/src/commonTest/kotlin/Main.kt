@@ -6,17 +6,15 @@ import kotlin.test.Test
 
 @Ignore
 class Main {
-    val repeat = 1000_000_000
+  val repeat = 1000_000_000
 
-    @Test
-    fun testNaive() {
-        NaiveJsonGrammar().parseToEnd(jsonSample1K)
-    }
+  @Test
+  fun testNaive() {
+    NaiveJsonGrammar().parseToEnd(jsonSample1K)
+  }
 
-    @Test
-    fun testOptimized() {
-        repeat(repeat) {
-            OptimizedJsonGrammar().parseToEnd(jsonSample1K)
-        }
-    }
+  @Test
+  fun testOptimized() {
+    repeat(repeat) { OptimizedJsonGrammar().parseToEnd(jsonSample1K) }
+  }
 }

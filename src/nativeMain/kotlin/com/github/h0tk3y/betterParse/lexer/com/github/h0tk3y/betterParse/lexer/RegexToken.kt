@@ -1,49 +1,53 @@
 package com.github.h0tk3y.betterParse.lexer
 
 public actual class RegexToken : Token {
-    private val pattern: String
-    private val regex: Regex
+  private val pattern: String
+  private val regex: Regex
 
-    private companion object {
-        const val inputStartPrefix = "\\A"
-    }
+  private companion object {
+    const val inputStartPrefix = "\\A"
+  }
 
-    private fun prependPatternWithInputStart(patternString: String, options: Set<RegexOption>) =
-        if (patternString.startsWith(inputStartPrefix))
-            patternString.toRegex(options)
-        else {
-            ("$inputStartPrefix(?:$patternString)").toRegex(options)
-        }
+  private fun prependPatternWithInputStart(patternString: String, options: Set<RegexOption>) =
+      if (patternString.startsWith(inputStartPrefix)) patternString.toRegex(options)
+      else {
+        ("$inputStartPrefix(?:$patternString)").toRegex(options)
+      }
 
-    public actual constructor(name: String?, patternString: String, ignored: Boolean)
-            : super(name, ignored) {
-        pattern = patternString
-        regex = prependPatternWithInputStart(patternString, emptySet())
-    }
+  public actual constructor(
+      name: String?,
+      patternString: String,
+      ignored: Boolean
+  ) : super(name, ignored) {
+    pattern = patternString
+    regex = prependPatternWithInputStart(patternString, emptySet())
+  }
 
-    public actual constructor(name: String?, regex: Regex, ignored: Boolean)
-            : super(name, ignored) {
-        pattern = regex.pattern
-        this.regex = prependPatternWithInputStart(pattern, emptySet())
-    }
+  public actual constructor(name: String?, regex: Regex, ignored: Boolean) : super(name, ignored) {
+    pattern = regex.pattern
+    this.regex = prependPatternWithInputStart(pattern, emptySet())
+  }
 
-    private class RelativeInput(val fromIndex: Int, val input: CharSequence) : CharSequence {
-        override val length: Int get() = input.length - fromIndex
-        override fun get(index: Int): Char = input[index + fromIndex]
-        override fun subSequence(startIndex: Int, endIndex: Int) =
-            input.subSequence(startIndex + fromIndex, endIndex + fromIndex)
+  private class RelativeInput(val fromIndex: Int, val input: CharSequence) : CharSequence {
+    override val length: Int
+      get() = input.length - fromIndex
 
-        override fun toString(): String = error("unsupported operation")
-    }
+    override fun get(index: Int): Char = input[index + fromIndex]
 
-    override actual fun match(input: CharSequence, fromIndex: Int): Int {
-        val relativeInput = RelativeInput(fromIndex, input)
+    override fun subSequence(startIndex: Int, endIndex: Int) =
+        input.subSequence(startIndex + fromIndex, endIndex + fromIndex)
 
-        return regex.find(relativeInput)?.range?.let {
-            val length = it.last - it.first + 1
-            length
-        } ?: 0
-    }
+    override fun toString(): String = error("unsupported operation")
+  }
 
-    override fun toString(): String = "${name ?: ""} [$pattern]" + if (ignored) " [ignorable]" else ""
+  override actual fun match(input: CharSequence, fromIndex: Int): Int {
+    val relativeInput = RelativeInput(fromIndex, input)
+
+    return regex.find(relativeInput)?.range?.let {
+      val length = it.last - it.first + 1
+      length
+    } ?: 0
+  }
+
+  override fun toString(): String = "${name ?: ""} [$pattern]" + if (ignored) " [ignorable]" else ""
 }
