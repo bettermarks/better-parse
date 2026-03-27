@@ -6,7 +6,8 @@ plugins {
 repositories { mavenCentral() }
 
 kotlin {
-  linuxX64 {}
+  linuxX64 { binaries.executable() }
+  linuxArm64() { binaries.executable() }
 
   sourceSets {
     val commonMain by getting { dependencies { api(rootProject) } }

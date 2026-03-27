@@ -1,5 +1,8 @@
+@file:OptIn(ExperimentalWasmDsl::class)
+
 import com.ncorti.ktfmt.gradle.tasks.KtfmtCheckTask
 import com.ncorti.ktfmt.gradle.tasks.KtfmtFormatTask
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -26,6 +29,8 @@ kotlin {
 
     jsTest { dependencies { implementation(kotlin("test-js")) } }
     jvmTest { dependencies { implementation(kotlin("test-junit")) } }
+
+    wasmJsMain { kotlin.srcDir("src/nativeMain/kotlin") }
   }
 
   targets.all {
@@ -43,7 +48,9 @@ kotlin {
     nodejs()
   }
 
+  wasmJs { nodejs() }
   linuxX64()
+  linuxArm64()
 }
 
 tasks.withType<KtfmtFormatTask> { exclude("**/generated/*.kt") }
