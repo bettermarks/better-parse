@@ -37,6 +37,16 @@ kotlin {
         }
     }
 
+    targets.all {
+        compilations.all {
+            compileTaskProvider.configure {
+                compilerOptions {
+                    freeCompilerArgs.add("-Xexpect-actual-classes")
+                }
+            }
+        }
+    }
+
     jvm {
         compilerOptions {
             jvmTarget = JvmTarget.JVM_21

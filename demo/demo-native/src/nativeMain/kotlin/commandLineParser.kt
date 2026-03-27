@@ -11,7 +11,7 @@ import com.github.h0tk3y.betterParse.parser.Parser
 fun main() {
     println("Enter a boolean expression:")
 
-    val expr = readLine().orEmpty()
+    val expr = readlnOrNull().orEmpty()
 
     val resultText = when (val parseResult = BooleanGrammar().tryParseToEnd(expr)) {
         is Parsed -> parseResult.value.toString()

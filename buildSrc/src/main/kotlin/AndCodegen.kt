@@ -5,7 +5,6 @@ fun andCodegen(maxN: Int, outputFile: String) {
 
     val resultCode = buildString {
         appendLine("@file:Suppress(")
-        appendLine("    \"NO_EXPLICIT_RETURN_TYPE_IN_API_MODE\", // fixme: bug in Kotlin 1.4.21, fixed in 1.4.30")
         appendLine("    \"MoveLambdaOutsideParentheses\", ")
         appendLine("    \"PackageDirectoryMismatch\"")
         appendLine(")")
@@ -27,8 +26,8 @@ fun andCodegen(maxN: Int, outputFile: String) {
                 """
                 @JvmName("and$i") public inline infix fun <$reifiedNext>
                     AndCombinator<Tuple$i$generics>.and(p${i + 1}: Parser<T${i + 1}>)
-                    // : AndCombinator<Tuple${i + 1}${genericsStr(i + 1)}> = 
-                    = AndCombinator(consumersImpl + p${i + 1}, {
+                      : AndCombinator<Tuple${i + 1}${genericsStr(i + 1)}> = 
+                    AndCombinator(consumersImpl + p${i + 1}, {
                         Tuple${i + 1}($casts)
                     })
                 """.trimIndent() + "\n"
@@ -38,8 +37,8 @@ fun andCodegen(maxN: Int, outputFile: String) {
                 """
                 @JvmName("and$i${"Operator"}") public inline operator fun <$reifiedNext>
                      AndCombinator<Tuple$i$generics>.times(p${i + 1}: Parser<T${i + 1}>) 
-                     // : AndCombinator<Tuple${i + 1}${genericsStr(i + 1)}> = 
-                     = this and p${i + 1}
+                      : AndCombinator<Tuple${i + 1}${genericsStr(i + 1)}> = 
+                     this and p${i + 1}
                 """.trimIndent() + "\n\n"
             )
         }

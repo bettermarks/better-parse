@@ -5,6 +5,7 @@ import com.github.h0tk3y.betterParse.lexer.regexToken
 import com.github.h0tk3y.betterParse.parser.Parser
 import com.github.h0tk3y.betterParse.parser.parseToEnd
 import com.github.h0tk3y.betterParse.utils.components
+import kotlin.native.concurrent.ObsoleteWorkersApi
 import kotlin.native.concurrent.TransferMode
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -21,6 +22,7 @@ class ConcurrentExecution {
         val parser = a and b and a use { components.map { it.type } }
     }
 
+    @OptIn(ObsoleteWorkersApi::class)
     @Test
     fun foo() {
         val worker = Worker.start()
