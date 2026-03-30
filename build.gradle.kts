@@ -27,9 +27,6 @@ kotlin {
       }
     }
 
-    jsTest { dependencies { implementation(kotlin("test-js")) } }
-    jvmTest { dependencies { implementation(kotlin("test-junit")) } }
-
     wasmJsMain { kotlin.srcDir("src/nativeMain/kotlin") }
   }
 

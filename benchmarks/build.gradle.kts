@@ -19,10 +19,6 @@ kotlin {
       }
     }
     commonTest { dependencies { implementation(kotlin("test")) } }
-
-    jvmTest { dependencies { implementation(kotlin("test-junit")) } }
-
-    jsTest { dependencies { implementation(kotlin("test-js")) } }
   }
 
   jvm { compilerOptions { jvmTarget = JvmTarget.JVM_21 } }
